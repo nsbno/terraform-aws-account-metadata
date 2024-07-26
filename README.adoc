@@ -10,14 +10,45 @@ toc::[]
 == Usage
 To use this module, just add it to your terraform!
 
-// TODO: Add variables to the module example!
+[source, hcl]
+----
+module "metadata" {
+  source = "github.com/nsbno/terraform-aws-account-metadata?ref=x.y.z"
+}
+----
+
+That's it 😄
+
+You can use the output of this module like this:
+[source, hcl]
+----
+module "ecs_task" {
+  source = "..."
+
+  vpc_id                   = module.metadata.network.vpc_id
+  private_subnet_ids       = module.metadata.network.private_subnet_ids
+
+  # [...]
+
+  lb_listeners = [{
+    listener_arn      = module.metadata.load_balancer.https_listener_arn
+    security_group_id = module.metadata.load_balancer.security_group_id
+
+    conditions = [{
+      path_pattern = "/${local.application_name}/*"
+    }]
+  }]
+}
+----
+
+Or if you have an API Gateway:
 
 [source, hcl]
 ----
-module "account-metadata" {
-  source = "github.com/nsbno/terraform-aws-account-metadata?ref=x.y.z"
+module "api_gateway" {
+  source = "..."
 
-
+  domain_name = module.metadata.dns.domain_name
 }
 ----
 
