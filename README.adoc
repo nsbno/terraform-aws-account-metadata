@@ -8,6 +8,7 @@ A data module that gives you typical values that are needed in your environment.
 toc::[]
 
 == Usage
+
 To use this module, just add it to your terraform!
 
 [source, hcl]
@@ -18,6 +19,8 @@ module "metadata" {
 ----
 
 That's it 😄
+
+Remember to check out the link:outputs.tf[*outputs*] to see all metadata.
 
 You can use the output of this module like this:
 [source, hcl]
