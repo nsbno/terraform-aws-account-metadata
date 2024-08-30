@@ -35,15 +35,15 @@ output "network" {
  */
 
 output "load_balancer" {
-  value = {
+  value = local.lb_arn != null ? {
     arn        = local.lb_arn
     arn_suffix = data.aws_lb.all[local.lb_arn].arn_suffix
 
     dns_name = data.aws_lb.all[local.lb_arn].dns_name
     zone_id  = data.aws_lb.all[local.lb_arn].zone_id
 
-    https_listener_arn = data.aws_lb_listener.https.arn
+    https_listener_arn = data.aws_lb_listener.https[0].arn
 
     security_group_id = tolist(data.aws_lb.all[local.lb_arn].security_groups)[0]
-  }
+  } : null
 }

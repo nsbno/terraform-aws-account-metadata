@@ -67,7 +67,7 @@ data "aws_subnets" "public" {
 data "aws_lbs" "all" {}
 
 data "aws_lb" "all" {
-  for_each = data.aws_lbs.all.arns
+  for_each = data.aws_lbs.all.arns != null ? data.aws_lbs.all.arns : []
 
   arn = each.value
 }
@@ -78,10 +78,12 @@ locals {
     for lb in data.aws_lb.all : lb.arn if lb.vpc_id == data.aws_vpc.shared.id
   ]
   # Then we just assume that there is only one load balancer in the shared VPC
-  lb_arn = local.lbs_in_shared_vpc[0]
+  lb_arn = length(local.lbs_in_shared_vpc) > 0 ? local.lbs_in_shared_vpc[0] : null
 }
 
 data "aws_lb_listener" "https" {
+  count = local.lb_arn != null ? 1 : 0
+
   load_balancer_arn = local.lb_arn
   port              = 443
 }
