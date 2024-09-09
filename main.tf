@@ -21,7 +21,7 @@ locals {
 }
 
 data "aws_route53_zone" "this" {
-  name = var.override_route53_zone ? var.override_route53_zone : local.account_domain
+  name = local.account_domain
 }
 
 /*
