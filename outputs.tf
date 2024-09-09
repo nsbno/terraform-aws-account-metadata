@@ -14,7 +14,7 @@ output "account" {
 output "dns" {
   value = {
     domain_name    = local.account_domain
-    hosted_zone_id = data.aws_route53_zone.this.zone_id
+    hosted_zone_id = local.route53_zone_id
   }
 }
 
