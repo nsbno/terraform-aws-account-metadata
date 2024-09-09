@@ -18,13 +18,10 @@ locals {
 
   account_base_domain = "${local.account_name}.vydev.io"
   account_domain      = local.is_production ? local.account_base_domain : "${local.environment}.${local.account_base_domain}"
-
-  # Handle the case where there is no Route53 zone
-  route53_zone_id = try(data.aws_route53_zone.this, null)
 }
 
 data "aws_route53_zone" "this" {
-  name = local.account_domain
+  name = var.override_route53_zone ? var.override_route53_zone : local.account_domain
 }
 
 /*
