@@ -89,3 +89,13 @@ data "aws_lb_listener" "https" {
   load_balancer_arn = local.lb_arn
   port              = 443
 }
+
+/*
+ * = Team name
+ */
+
+data "aws_ssm_parameter" "team_name" {
+  count = var.team_name ? 1 : 0
+
+  name = "/__platform__/team_name_handle"
+}

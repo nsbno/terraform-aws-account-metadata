@@ -9,3 +9,9 @@ variable "load_balancer" {
   type        = bool
   default     = true
 }
+
+variable "team_name" {
+  description = "Get the name of the team"
+  type        = string
+  default     = false
+}

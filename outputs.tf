@@ -47,3 +47,11 @@ output "load_balancer" {
     security_group_id = tolist(data.aws_lb.all[local.lb_arn].security_groups)[0]
   }
 }
+
+/*
+ * = Team name
+ */
+
+output "team_name" {
+  value = var.team_name == false ? null : data.aws_ssm_parameter.team_name[0].value
+}
