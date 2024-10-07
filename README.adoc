@@ -55,3 +55,13 @@ module "api_gateway" {
 }
 ----
 
+
+== Examples
+
+link:examples/simple[Simple Example]::
+In reality just the example you can see on the top of this README.
+
+link:examples/with_options[Example with Options]::
+Here you can see how to turn off individual parts of the metadata.
+Usefull when the account doesn't have the resources.
+

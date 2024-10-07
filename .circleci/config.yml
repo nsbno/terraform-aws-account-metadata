@@ -14,6 +14,8 @@ terraform_versions: &terraform_versions
 
 terraform_folders: &terraform_folders
   - ./
+  - ./examples/simple
+  - ./examples/with_options
 
 workflows:
   validate:
