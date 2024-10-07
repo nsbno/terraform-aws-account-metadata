@@ -7,5 +7,5 @@ module "account_metadata" {
   # This can be useful if you don't have an ALB or are missing
   # the team name setup.
   load_balancer = false
-  team_name = false
+  team_name     = false
 }
