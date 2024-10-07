@@ -12,6 +12,6 @@ variable "load_balancer" {
 
 variable "team_name" {
   description = "Get the name of the team"
-  type        = string
+  type        = bool
   default     = false
 }
