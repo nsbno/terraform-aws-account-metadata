@@ -90,6 +90,13 @@ data "aws_lb_listener" "https" {
   port              = 443
 }
 
+data "aws_lb_listener" "https_test" {
+  count = var.load_balancer ? 1 : 0
+
+  load_balancer_arn = local.lb_arn
+  port              = 8443
+}
+
 /*
  * = Team name
  */

@@ -43,6 +43,7 @@ output "load_balancer" {
     zone_id  = data.aws_lb.all[local.lb_arn].zone_id
 
     https_listener_arn = data.aws_lb_listener.https[0].arn
+    https_test_listener_arn = data.aws_lb_listener.https_test[0].arn
 
     security_group_id = tolist(data.aws_lb.all[local.lb_arn].security_groups)[0]
   }
