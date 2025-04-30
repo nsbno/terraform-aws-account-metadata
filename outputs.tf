@@ -13,8 +13,9 @@ output "account" {
 
 output "dns" {
   value = var.dns == false ? null : {
-    domain_name    = local.account_domain
-    hosted_zone_id = data.aws_route53_zone.this[0].zone_id
+    domain_name      = local.account_domain
+    hosted_zone_id   = data.aws_route53_zone.this[0].zone_id
+    hosted_zone_name = data.aws_route53_zone.this[0].name
   }
 }
 
@@ -42,7 +43,7 @@ output "load_balancer" {
     dns_name = data.aws_lb.all[local.lb_arn].dns_name
     zone_id  = data.aws_lb.all[local.lb_arn].zone_id
 
-    https_listener_arn = data.aws_lb_listener.https[0].arn
+    https_listener_arn      = data.aws_lb_listener.https[0].arn
     https_test_listener_arn = data.aws_lb_listener.https_test[0].arn
 
     security_group_id = tolist(data.aws_lb.all[local.lb_arn].security_groups)[0]
