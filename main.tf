@@ -18,6 +18,13 @@ locals {
 
   account_base_domain = "${local.account_name}.vydev.io"
   account_domain      = local.is_production ? local.account_base_domain : "${local.environment}.${local.account_base_domain}"
+
+  cognito_user_pool_id_mapping = {
+    "dev"   = "eu-west-1_0AvVv5Wyk"
+    "test"  = "eu-west-1_Z53b9AbeT"
+    "stage" = "eu-west-1_AUYQ679zW"
+    "prod"  = "eu-west-1_e6o46c1oE"
+  }
 }
 
 data "aws_route53_zone" "this" {

@@ -57,3 +57,11 @@ output "load_balancer" {
 output "team_name" {
   value = var.team_name == false ? null : data.aws_ssm_parameter.team_name[0].value
 }
+
+
+/*
+ * = Shared Cognito User Pool Mapping
+ */
+output "shared_cognito_user_pool_mapping" {
+  value = local.cognito_user_pool_id_mapping
+}
