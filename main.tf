@@ -82,12 +82,17 @@ data "aws_lb" "all" {
 }
 
 locals {
-  # Get the ARN of the load balancer that is in the same VPC as the shared VPC
+  # The shared VPC can contain several load balancers. The ones we care about
+  # are those that carry the https (443) and https_test (8443) listeners.
   lbs_in_shared_vpc = [
-    for lb in data.aws_lb.all : lb.arn if lb.vpc_id == data.aws_vpc.shared.id
+    for lb in data.aws_lb.all : lb.arn
+    if lb.vpc_id == data.aws_vpc.shared.id
+    && !anytrue([
+      for prefix in var.load_balancer_excluded_name_prefixes : startswith(lb.name, prefix)
+    ])
   ]
-  # Then we just assume that there is only one load balancer in the shared VPC
-  lb_arn = var.load_balancer ? local.lbs_in_shared_vpc[0] : null
+
+  lb_arn = var.load_balancer ? try(local.lbs_in_shared_vpc[0], null) : null
 }
 
 data "aws_lb_listener" "https" {
@@ -95,6 +100,13 @@ data "aws_lb_listener" "https" {
 
   load_balancer_arn = local.lb_arn
   port              = 443
+
+  lifecycle {
+    precondition {
+      condition     = length(local.lbs_in_shared_vpc) == 1
+      error_message = "The shared-vpc contained more than one Load Balancer (after excluding prefixes: ${jsonencode(var.load_balancer_excluded_name_prefixes)}). Cannot determine which one to use. Found ${length(local.lbs_in_shared_vpc)}: ${jsonencode(local.lbs_in_shared_vpc)}"
+    }
+  }
 }
 
 data "aws_lb_listener" "https_test" {
