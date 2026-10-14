@@ -1,0 +1,31 @@
+name: Validate Terraform
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  fmt: # Required status checks in GitHub
+    uses: nsbno/platform-actions/.github/workflows/lint.terraform.yml@v2
+    with:
+      working-directory: .
+      terraform-version: "1.16.6"
+      run-validate: false # validate runs in the matrix below
+
+  validate:
+    strategy:
+      fail-fast: false
+      matrix:
+        terraform_version:
+          - "1.12.2"
+          - "1.16.6"
+        working_directory:
+          - .
+          - examples/simple
+          - examples/with_options
+    uses: nsbno/platform-actions/.github/workflows/lint.terraform.yml@v2
+    with:
+      working-directory: ${{ matrix.working_directory }}
+      terraform-version: ${{ matrix.terraform_version }}
+      run-fmt: false # fmt runs once, recursively, in the fmt job
